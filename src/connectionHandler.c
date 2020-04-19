@@ -13,7 +13,7 @@ void connectionHandler(int sock) {
 		
  		if (read_size > maxMessageLength) {
 
-			char message[] = "Max size is 10.000 characters!";
+			char message[] = "Max size is 10.000 characters!\n";
 			write(sock, message, strlen(message));
 			close(sock);
 		}
@@ -22,11 +22,13 @@ void connectionHandler(int sock) {
 		printf("Received %d bytes\n", read_size);
 		writeDB(key, readBuffer);
 		
-		write(sock, key, strlen(key));
+		char *url[4000];
+		sprintf(url, "http://catbin.xyz/%s\n", key);
+
+		// First write url then write key
+		write(sock, url, strlen(url));
 		close(sock);
 
 	}
-
-	puts("Connection closed");
 
 }

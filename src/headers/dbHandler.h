@@ -1,4 +1,4 @@
-int setupDB();
+int openDB();
 int writeDB();
-int readDB();
+char *readDB();
 int closeDB();

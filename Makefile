@@ -1,8 +1,12 @@
 CC=gcc
-CFLAGS=-pthread -Wall -Wextra -O2 -std=c99 -pedantic -lleveldb
+CFLAGS=-pthread -Wall -Wextra -O2 -std=c99 -pedantic -lleveldb -lmicrohttpd
 
-makeserver:
+build:
 	$(CC) $(CFLAGS) -o bin/server src/*.c
+
+# Adds symbols
+debug:
+	$(CC) $(CFLAGS) -g -o bin/server src/*.c
 
 clean:
 	rm server

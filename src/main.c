@@ -7,31 +7,56 @@
 #include <pthread.h>
 #include "headers/connectionHandler.h"
 #include "headers/dbHandler.h"
+#include "headers/webserver.h"
+
+int dbStrarted = 0;
+int webserverStarted = 0;
 
 void beforeExit() {
-	closeDB();
+	if (dbStrarted == 1)
+		closeDB();
+	
+	if (webserverStart == 1)
+		webserverStop();
 }
 
 int main(int argc, char *argv[]) {
-	
+
 	atexit(beforeExit);
 
-	puts("Setting up database");
- 	if (setupDB() > 0)
-		return 1;
-	
 	int port = 5454;
+	int webPort = 8080;
+
 	int option;
-	while ((option = getopt(argc, argv, ":p:")) != -1 )  {  
+	while ((option = getopt(argc, argv, ":ps:")) != -1 )  {  
         switch(option) {  
 			case 'p':
 				port = atoi(optarg);
+				break;
+			case 's':
+				webPort = atoi(optarg);
 				break;
 			case ':':
 				fprintf(stderr, "Missing argument value\n");
 				return 1;
         }
 	}
+
+	if (webserverStart(webPort) < 0) {
+		perror("Error starting webserver: ");
+		return 1;
+	}
+	
+	printf("Webserver listening at %d\n", webPort);
+
+	webserverStarted = 1;
+
+
+ 	if (openDB() < 0)
+		return 1;
+
+	dbStrarted = 1;
+
 
 	int socket_desc = socket(AF_INET , SOCK_STREAM , 0);
 	
@@ -52,14 +77,12 @@ int main(int argc, char *argv[]) {
 		perror("Error binding to port");
 		return 1;
 	} else {
-		printf("Binded to port %d\n", port);
+		printf("Socket listening at %d\n", port);
 	}
 
 	if (listen(socket_desc, 3) < 0) {
-		perror("Error");
+		perror("Error: ");
 		return 1;
-	} else {
-		puts("Listening...");
 	}
 
 	size_t addr_len = sizeof(server);
@@ -71,8 +94,6 @@ int main(int argc, char *argv[]) {
 			perror("Error");
 			break;
 		}
-
-		puts("Connection accepted");
 		
 		void connectionHandler(int socket);
 		pthread_t thread_id;

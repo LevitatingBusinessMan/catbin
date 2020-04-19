@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <string.h>
 
 void rdmstr(char *dest, size_t length) {
 	char charset[] = "abcdefghijklmnopqrstuvwxyz" "ABCDEFGHIJKLMNOPQRSTUVWXYZ";

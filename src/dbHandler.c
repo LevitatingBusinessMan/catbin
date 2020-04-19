@@ -7,7 +7,7 @@ leveldb_options_t *options;
 leveldb_readoptions_t *roptions;
 leveldb_writeoptions_t *woptions;
 
-int setupDB() {
+int openDB() {
 
  	char *errptr = NULL;
 
@@ -22,7 +22,7 @@ int setupDB() {
 
 	if (errptr != NULL) {
 		fprintf(stderr, "Failure opening db %s\n", errptr);
-    	return 1;
+    	return -1;
     }
 
 	return 0;
@@ -48,10 +48,10 @@ int writeDB(char *key, char *value) {
 
 }
 
-size_t readlen;
-int readDB(char *key) {
+char *readDB(char *key) {
 
 	char *errptr = NULL;
+	size_t readlen;
 
 	char *read = leveldb_get(db, roptions, key, strlen(key), &readlen, &errptr);
 
