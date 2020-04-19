@@ -1,0 +1,1 @@
+void rdmstr(char *dest, size_t length);

@@ -1,0 +1,6 @@
+{
+	"files.associations": {
+		"connectionhandler.h": "c",
+		"libpq.h": "c"
+	}
+}
