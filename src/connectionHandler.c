@@ -41,7 +41,9 @@ void *connectionHandler(void *argsptr) {
 			perror("Error writing to socket: ");
 	
 		if (shutdown(sock, SHUT_RDWR) < 0)
-			perror("Error closing socket: ");
+			perror("Error shutting down socket: ");
+		
+		close(sock);
 
 	}
 

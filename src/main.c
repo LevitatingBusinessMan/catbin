@@ -109,9 +109,9 @@ int main(int argc, char *argv[]) {
 	if ( bind(socket_fdesc, (struct sockaddr *)&server, sizeof(server)) < 0) {
 		perror("Error binding to port");
 		return 1;
-	} else {
-		printf("Socket listening at %d\n", port);
 	}
+	
+	printf("Socket listening at %d\n", port);
 
 	if (listen(socket_fdesc, 3) < 0) {
 		perror("Error: ");
