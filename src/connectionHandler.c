@@ -3,10 +3,14 @@
 #include <dbHandler.h>
 #include <unistd.h>
 #include <sys/socket.h>
+#include <ArgumentStruct.h>
 
-void *connectionHandler(void *sockptr) {
+void *connectionHandler(void *argsptr) {
 
-	int sock = *(int *)sockptr;
+	struct ArgumentStruct *args = argsptr;
+
+	int sock = args->sock;
+	char *domain = args->domain;
 
 	int maxMessageLength = 10000;
 	int bufferSize = maxMessageLength + 1;
@@ -29,9 +33,9 @@ void *connectionHandler(void *sockptr) {
 		printf("Received %d bytes\n", read_size);
 		writeDB(&key, readBuffer);
 		
-		size_t length = 25;
+		size_t length = strlen(domain) + 15;
 		char url[length];
-		snprintf(url, length, "http://catbin.xyz/%s\n", key);
+		snprintf(url, length, "http://%s/%s\n", domain, key);
 
 		if (write(sock, url, length) < 0)
 			perror("Error writing to socket: ");

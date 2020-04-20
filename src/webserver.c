@@ -112,7 +112,7 @@ int answer_to_connection(
 int webserverStart(size_t port, char *path)
 {
 
-	//Store path globally
+	//Store vars globally
 	contentPath = path;
 
 	daemon = MHD_start_daemon(

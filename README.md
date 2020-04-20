@@ -18,7 +18,7 @@ Launch a catbin server
 	-p					Port to listen for nc sockets
 	-s					Port to run webserver on
 	-w, --webcontent	Directory were files are served from
-
+	-d, --domain		The domain where the service is accessed from
 
 ```
 

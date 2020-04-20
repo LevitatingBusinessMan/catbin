@@ -8,6 +8,7 @@
 #include <connectionHandler.h>
 #include <dbHandler.h>
 #include <webserver.h>
+#include <ArgumentStruct.h>
 
 int dbStrarted = 0;
 int webserverStarted = 0;
@@ -28,13 +29,16 @@ int main(int argc, char *argv[]) {
 	int webPort = 8080;
 
 	char *webcontentPath = "/usr/share/catbind/webcontent";
+	char *domain = "catbin.xyz";
+
 	struct option long_options[] = {
-		{"webcontent", required_argument, 0, 'w'}
+		{"webcontent", required_argument, 0, 'w'},
+		{"domain", required_argument, 0, 'd'}
 	};
 
 
 	int option;
-	while ((option = getopt_long(argc, argv, ":p:s:w:", long_options, NULL)) != -1 )  {  
+	while ((option = getopt_long(argc, argv, ":p:s:w:d:", long_options, NULL)) != -1 )  {  
         switch(option) {  
 			case 'p':
 				port = atoi(optarg);
@@ -45,6 +49,9 @@ int main(int argc, char *argv[]) {
 			case 'w':
 				webcontentPath = optarg;
 				break;
+			case 'd':
+				domain = optarg;
+				break;
 			case ':':
 				fprintf(stderr, "Missing argument value\n");
 				return 1;
@@ -54,13 +61,20 @@ int main(int argc, char *argv[]) {
 	// If string starts with a space remove it
 	if (*webcontentPath == ' ')
 		webcontentPath++;
+	if (*domain == ' ')
+		domain++;
 
 	if (webserverStart(webPort, webcontentPath) < 0) {
 		perror("Error starting webserver: ");
 		return 1;
 	}
 	
-	printf("Webserver listening at %d\nand serving from %s\n", webPort, webcontentPath);
+	printf (
+		"Webserver listening at %d\n"
+		"Serving from %s\n"
+		"Domain: %s\n", 
+		webPort, webcontentPath, domain
+	);
 
 	webserverStarted = 1;
 
@@ -116,7 +130,12 @@ int main(int argc, char *argv[]) {
 		
 		pthread_t thread_id;
 
-		if(pthread_create( &thread_id , NULL ,  connectionHandler , &conn_socket) < 0) {
+		struct ArgumentStruct args;
+
+		args.sock = conn_socket;
+		args.domain = domain;
+
+		if(pthread_create( &thread_id , NULL ,  connectionHandler , &args) < 0) {
 			perror("Error");
 			break;
 		}
