@@ -14,6 +14,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: install dependencies
-      run: sudo apt-get install libmicrohttpd leveldb
+      run: sudo apt-get install libmicrohttpd-dev libleveldb-dev
     - name: make
       run: make release
