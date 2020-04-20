@@ -1,6 +1,6 @@
 #include <leveldb/c.h>
 #include <stdio.h>
-#include "headers/randomKey.h"
+#include <randomKey.h>
 #include <string.h>
 
 leveldb_t *db;

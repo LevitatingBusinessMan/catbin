@@ -5,9 +5,9 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <pthread.h>
-#include "headers/connectionHandler.h"
-#include "headers/dbHandler.h"
-#include "headers/webserver.h"
+#include <connectionHandler.h>
+#include <dbHandler.h>
+#include <webserver.h>
 
 int dbStrarted = 0;
 int webserverStarted = 0;
