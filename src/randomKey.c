@@ -21,4 +21,6 @@ int rdmstr(char *dest, size_t length) {
 
     fclose(fs);
 
+    return 0;
+
 }

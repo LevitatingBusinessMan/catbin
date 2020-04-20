@@ -1,6 +1,7 @@
 #include <leveldb/c.h>
 #include <stdio.h>
 #include "headers/randomKey.h"
+#include <string.h>
 
 leveldb_t *db;
 leveldb_options_t *options;
@@ -60,7 +61,7 @@ char *readDB(char *key) {
 	char *read = leveldb_get(db, roptions, key, strlen(key), &readlen, &errptr);
 
 	if (errptr != NULL) {
-		fprintf(stderr, "Failure reading db:", errptr);
+		fprintf(stderr, "Failure reading db: %s", errptr);
 		leveldb_free(errptr);
 		return NULL;
 	}
@@ -69,6 +70,6 @@ char *readDB(char *key) {
 
 }
 
-int closeDB() {
+void closeDB() {
 	leveldb_close(db);
 }

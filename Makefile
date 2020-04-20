@@ -2,7 +2,7 @@ CC=gcc
 CFLAGS=-pthread -Wall -Wextra -O2 -std=c99 -pedantic -lleveldb -lmicrohttpd
 
 build:
-	$(CC) $(CFLAGS) -o bin/server src/*.c
+	$(CC) $(CFLAGS) -o bin/server src/*.c -I src/headers
 
 # Adds symbols
 debug:

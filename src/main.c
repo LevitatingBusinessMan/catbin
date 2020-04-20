@@ -16,7 +16,7 @@ void beforeExit() {
 	if (dbStrarted == 1)
 		closeDB();
 	
-	if (webserverStart == 1)
+	if (webserverStarted == 1)
 		webserverStop();
 }
 
@@ -95,10 +95,9 @@ int main(int argc, char *argv[]) {
 			break;
 		}
 		
-		void connectionHandler(int socket);
 		pthread_t thread_id;
 
-		if(pthread_create( &thread_id , NULL ,  connectionHandler , conn_socket) < 0) {
+		if(pthread_create( &thread_id , NULL ,  connectionHandler , &conn_socket) < 0) {
 			perror("Error");
 			break;
 		}
