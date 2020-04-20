@@ -1,4 +1,4 @@
-# Catbind
+# Catbin
 A termbin clone.
 
 ## To build/install/run the server:
