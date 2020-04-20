@@ -18,8 +18,10 @@ void *connectionHandler(void *sockptr) {
  		if (read_size > maxMessageLength) {
 
 			char message[] = "Max size is 10.000 characters!\n";
-			write(sock, message, strlen(message));
+			if (write(sock, message, strlen(message)) < 0)
+				perror("Error writing to socket: ");
 			close(sock);
+
 		}
 
 		char key[5];
@@ -30,8 +32,9 @@ void *connectionHandler(void *sockptr) {
 		char url[length];
 		snprintf(url, length, "http://catbin.xyz/%s\n", key);
 
-		//snprintf fucks up with newline?
-		write(sock, url, length);
+		if (write(sock, url, length) < 0)
+			perror("Error writing to socket: ");
+	
 		close(sock);
 
 	}

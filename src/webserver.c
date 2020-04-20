@@ -31,7 +31,7 @@ int getIndex(char **content)
 	if ((*content = malloc(size + 1)) == NULL)
 		return -1;
 
-	fread(*content, 1, size, fs);
+	(void) fread(*content, 1, size, fs);
 
 	fclose(fs);
 
