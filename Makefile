@@ -23,5 +23,8 @@ install:
 uninstall:
 	rm -rv /usr/lib/catbind /usr/bin/catbind /usr/share/catbind
 
+make check:
+	./test.sh
+
 clean:
 	rm -r bin

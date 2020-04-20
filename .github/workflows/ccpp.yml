@@ -17,3 +17,5 @@ jobs:
       run: sudo apt-get install libmicrohttpd-dev libleveldb-dev
     - name: make
       run: make release
+    - name: test
+      run: make check
