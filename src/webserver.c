@@ -6,13 +6,20 @@
 
 struct MHD_Daemon *daemon;
 
+char *contentPath;
+
 int getIndex(char **content)
 {
 
 	FILE *fs;
 
+	//Create path
+	char path[100];
+	strcpy(path, contentPath);
+	strcat(path, "/index.html\0");
+
 	// Open file
-	if (!(fs = fopen("src/webcontent/index.html", "r")))
+	if (!(fs = fopen(path, "r")))
 		return -1;
 
 	//Get size of file
@@ -101,8 +108,11 @@ int answer_to_connection(
 	return ret;
 }
 
-int webserverStart(size_t port)
+int webserverStart(size_t port, char *path)
 {
+
+	//Store path globally
+	contentPath = path;
 
 	daemon = MHD_start_daemon(
 		MHD_USE_INTERNAL_POLLING_THREAD,
@@ -117,6 +127,7 @@ int webserverStart(size_t port)
 		return -1;
 	else
 		return 0;
+
 }
 
 void webserverStop()

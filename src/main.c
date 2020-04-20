@@ -27,8 +27,14 @@ int main(int argc, char *argv[]) {
 	int port = 5454;
 	int webPort = 8080;
 
+	char *webcontentPath = "/usr/share/catbind/webcontent";
+	struct option long_options[] = {
+		{"webcontent", required_argument, 0, 'w'}
+	};
+
+
 	int option;
-	while ((option = getopt(argc, argv, ":ps:")) != -1 )  {  
+	while ((option = getopt_long(argc, argv, ":p:s:w:", long_options, NULL)) != -1 )  {  
         switch(option) {  
 			case 'p':
 				port = atoi(optarg);
@@ -36,18 +42,21 @@ int main(int argc, char *argv[]) {
 			case 's':
 				webPort = atoi(optarg);
 				break;
+			case 'w':
+				webcontentPath = optarg+1;
+				break;
 			case ':':
 				fprintf(stderr, "Missing argument value\n");
 				return 1;
         }
 	}
 
-	if (webserverStart(webPort) < 0) {
+	if (webserverStart(webPort, webcontentPath) < 0) {
 		perror("Error starting webserver: ");
 		return 1;
 	}
 	
-	printf("Webserver listening at %d\n", webPort);
+	printf("Webserver listening at %d\nand serving from %s\n", webPort, webcontentPath);
 
 	webserverStarted = 1;
 
@@ -58,9 +67,9 @@ int main(int argc, char *argv[]) {
 	dbStrarted = 1;
 
 
-	int socket_desc = socket(AF_INET , SOCK_STREAM , 0);
+	int socket_fdesc = socket(AF_INET , SOCK_STREAM , 0);
 	
-	if (socket_desc == -1) {
+	if (socket_fdesc == -1) {
 		perror("Error");
 		return 1;
 	}
@@ -72,15 +81,21 @@ int main(int argc, char *argv[]) {
 	server.sin_addr.s_addr = INADDR_ANY;
 	server.sin_port = htons(port);
 
+	int opton_value = 1;
+	if (setsockopt(socket_fdesc, SOL_SOCKET, SO_REUSEADDR, &opton_value , sizeof(int)) < 0) {
+		perror("Error setting socket_fdesc option");
+		return 1;
+	}
+
 	//Bind and check for errors
-	if ( bind(socket_desc, (struct sockaddr *)&server, sizeof(server)) < 0) {
+	if ( bind(socket_fdesc, (struct sockaddr *)&server, sizeof(server)) < 0) {
 		perror("Error binding to port");
 		return 1;
 	} else {
 		printf("Socket listening at %d\n", port);
 	}
 
-	if (listen(socket_desc, 3) < 0) {
+	if (listen(socket_fdesc, 3) < 0) {
 		perror("Error: ");
 		return 1;
 	}
@@ -88,7 +103,7 @@ int main(int argc, char *argv[]) {
 	size_t addr_len = sizeof(server);
 
 	int conn_socket;
-	while ((conn_socket = accept(socket_desc, (struct sockaddr *)&server, (socklen_t *)&addr_len))) {
+	while ((conn_socket = accept(socket_fdesc, (struct sockaddr *)&server, (socklen_t *)&addr_len))) {
 
 		if (conn_socket <1) {
 			perror("Error");

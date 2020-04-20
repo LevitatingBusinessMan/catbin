@@ -27,10 +27,10 @@ void *connectionHandler(void *sockptr) {
 		writeDB(&key, readBuffer);
 		
 		char url[24];
-		sprintf(url, "http://catbin.xyz/%s\n", key);
+		snprintf(url, 24, "http://catbin.xyz/%s\n", key);
 
-		// First write url then write key
-		write(sock, url, strlen(url));
+		// strlen(url) is somehow 42???
+		write(sock, url, 24);
 		close(sock);
 
 	}
