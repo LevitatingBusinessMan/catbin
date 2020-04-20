@@ -1,15 +1,19 @@
 CC=gcc
 CFLAGS=-pthread -Wall -Wextra -O2 -std=c99 -pedantic -lleveldb -lmicrohttpd
 
+
 build:
+	mkdir -p bin
 	$(CC) $(CFLAGS) -o bin/catbind src/*.c -I src/headers
 
 # With errors instead of warnings
 release:
+	mkdir -p bin
 	$(CC) $(CFLAGS) -Werror -o bin/catbind src/*.c -I src/headers
 
 # Adds symbols
 debug:
+	mkdir -p bin
 	$(CC) $(CFLAGS) -g -o bin/catbind src/*.c -I src/headers
 
 install:

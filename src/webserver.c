@@ -24,14 +24,15 @@ int getIndex(char **content)
 
 	//Get size of file
 	fseek(fs, 0, SEEK_END);
-	int size = ftell(fs);
+	unsigned int size = ftell(fs);
 	rewind(fs);
 
 	// Read to buffer
 	if ((*content = malloc(size + 1)) == NULL)
 		return -1;
 
-	(void) fread(*content, 1, size, fs);
+	if (fread(*content, 1, size, fs) < size)
+		perror("Error reading file: ");
 
 	fclose(fs);
 
