@@ -43,13 +43,17 @@ int main(int argc, char *argv[]) {
 				webPort = atoi(optarg);
 				break;
 			case 'w':
-				webcontentPath = optarg+1;
+				webcontentPath = optarg;
 				break;
 			case ':':
 				fprintf(stderr, "Missing argument value\n");
 				return 1;
         }
 	}
+
+	// If string starts with a space remove it
+	if (*webcontentPath == ' ')
+		webcontentPath++;
 
 	if (webserverStart(webPort, webcontentPath) < 0) {
 		perror("Error starting webserver: ");

@@ -13,7 +13,7 @@ release:
 # Adds symbols
 debug:
 	mkdir -p bin
-	$(CC) $(CFLAGS) -g -o bin/catbind src/*.c -I src/headers
+	$(CC) $(CFLAGS) -g -o bin/catbind src/*.c
 
 install:
 	install -Dvm 755 bin/catbind /usr/lib/catbind
