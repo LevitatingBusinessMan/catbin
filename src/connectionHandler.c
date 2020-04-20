@@ -2,6 +2,7 @@
 #include <string.h>
 #include "headers/dbHandler.h"
 #include <unistd.h>
+#include <sys/socket.h>
 
 void *connectionHandler(void *sockptr) {
 
@@ -20,8 +21,8 @@ void *connectionHandler(void *sockptr) {
 			char message[] = "Max size is 10.000 characters!\n";
 			if (write(sock, message, strlen(message)) < 0)
 				perror("Error writing to socket: ");
-			close(sock);
-
+			if (shutdown(sock, SHUT_RDWR) < 0)
+				perror("Error closing socket: ");		
 		}
 
 		char key[5];
@@ -35,7 +36,8 @@ void *connectionHandler(void *sockptr) {
 		if (write(sock, url, length) < 0)
 			perror("Error writing to socket: ");
 	
-		close(sock);
+		if (shutdown(sock, SHUT_RDWR) < 0)
+			perror("Error closing socket: ");
 
 	}
 

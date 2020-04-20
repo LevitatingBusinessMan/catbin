@@ -3,6 +3,7 @@ A termbin clone.
 To build/install/run the server:
 ```SH
 git clone https://github.com/LevitatingBusinessMan/catbin
+sudo apt-get install libmicrohttpd-dev libleveldb-dev -y
 make
 sudo make install
 catbind
