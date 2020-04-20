@@ -26,11 +26,12 @@ void *connectionHandler(void *sockptr) {
 		printf("Received %d bytes\n", read_size);
 		writeDB(&key, readBuffer);
 		
-		char url[24];
-		snprintf(url, 24, "http://catbin.xyz/%s\n", key);
+		size_t length = 25;
+		char url[length];
+		snprintf(url, length, "http://catbin.xyz/%s\n", key);
 
-		// strlen(url) is somehow 42???
-		write(sock, url, 24);
+		//snprintf fucks up with newline?
+		write(sock, url, length);
 		close(sock);
 
 	}
