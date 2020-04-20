@@ -11,7 +11,6 @@ int rdmstr(char *dest, size_t length) {
 	char charset[] = "abcdefghijklmnopqrstuvwxyz" "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	
 	while (length-- > 0) {
-        printf("%d", fgetc(fs));
         size_t index = (double) fgetc(fs) / 255 * (sizeof charset - 1);
         *dest++ = charset[index];
     }
