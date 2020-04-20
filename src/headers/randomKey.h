@@ -1,1 +1,1 @@
-void rdmstr(char *dest, size_t length);
+int rdmstr(char *dest, size_t length);

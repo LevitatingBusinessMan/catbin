@@ -1,14 +1,24 @@
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
-void rdmstr(char *dest, size_t length) {
+int rdmstr(char *dest, size_t length) {
+
+    FILE *fs;
+    if (!(fs = fopen("/dev/random", "r")))
+		return -1;
+
 	char charset[] = "abcdefghijklmnopqrstuvwxyz" "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	
 	while (length-- > 0) {
-        size_t index = (double) rand() / RAND_MAX * (sizeof charset - 1);
+        printf("%d", fgetc(fs));
+        size_t index = (double) fgetc(fs) / 255 * (sizeof charset - 1);
         *dest++ = charset[index];
     }
 
 	// Add null byte to end
     *dest = '\0';
+
+    fclose(fs);
+
 }

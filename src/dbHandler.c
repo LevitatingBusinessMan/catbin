@@ -34,7 +34,11 @@ int writeDB(char *key, char *value) {
 	char *errptr = NULL;
 
 	size_t keylength = 5;
-	rdmstr(key, keylength);
+
+	if(rdmstr(key, keylength) < 0) {
+		perror("Error creating random key: ");
+		return -1;
+	}
 
 	leveldb_put(db, woptions, key, strlen(key), value, strlen(value), &errptr);
 
