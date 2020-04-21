@@ -26,7 +26,7 @@ int main(int argc, char *argv[]) {
 	atexit(beforeExit);
 
 	int port = 5454;
-	int webPort = 8080;
+	int webPort = 80;
 
 	char *webcontentPath = "/usr/share/catbind/webcontent";
 	char *domain = "catbin.xyz";
