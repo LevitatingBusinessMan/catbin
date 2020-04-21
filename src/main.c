@@ -40,7 +40,7 @@ int main(int argc, char *argv[]) {
 
 
 	int option;
-	while ((option = getopt_long(argc, argv, ":p:s:w:d:", long_options, NULL)) != -1 )  {  
+	while ((option = getopt_long(argc, argv, ":p:s:w:h:d:", long_options, NULL)) != -1 )  {  
         switch(option) {  
 			case 'p':
 				port = atoi(optarg);

@@ -5,7 +5,7 @@ PORT="5454"
 HOST="localhost"
 SRVPORT="8080"
 
-bin/catbind -d "${HOST}:${SRVPORT}" > /dev/null &
+bin/catbind -h "${HOST}:${SRVPORT}" -d "/tmp/catbind" &
 
 # Sleep a second for the server to start
 sleep 3
