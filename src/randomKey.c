@@ -5,7 +5,7 @@
 int rdmstr(char *dest, size_t length) {
 
     FILE *fs;
-    if (!(fs = fopen("/dev/random", "r")))
+    if (!(fs = fopen("/dev/urandom", "r")))
 		return -1;
 
 	char charset[] = "abcdefghijklmnopqrstuvwxyz" "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
