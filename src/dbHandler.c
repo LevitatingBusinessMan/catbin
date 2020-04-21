@@ -8,7 +8,7 @@ leveldb_options_t *options;
 leveldb_readoptions_t *roptions;
 leveldb_writeoptions_t *woptions;
 
-int openDB() {
+int openDB(char *directory) {
 
  	char *errptr = NULL;
 
@@ -19,7 +19,7 @@ int openDB() {
 
 	leveldb_options_set_create_if_missing(options, 1);
 	
-	db = leveldb_open(options, "termbin", &errptr);
+	db = leveldb_open(options, directory, &errptr);
 
 	if (errptr != NULL) {
 		fprintf(stderr, "Failure opening db %s\n", errptr);

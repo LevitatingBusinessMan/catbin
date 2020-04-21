@@ -5,6 +5,8 @@
 #include <sys/socket.h>
 #include <ArgumentStruct.h>
 
+#define MAX_MESSAGE_LENGTH 10000
+
 void *connectionHandler(void *argsptr) {
 
 	struct ArgumentStruct *args = argsptr;
@@ -12,15 +14,14 @@ void *connectionHandler(void *argsptr) {
 	int sock = args->sock;
 	char *domain = args->domain;
 
-	int maxMessageLength = 10000;
-	int bufferSize = maxMessageLength + 1;
+	int bufferSize = MAX_MESSAGE_LENGTH + 1;
 
 	char *readBuffer[bufferSize];
 	
 	int read_size;
 	while( (read_size = read(sock , readBuffer , bufferSize)) > 0) {
 		
- 		if (read_size > maxMessageLength) {
+ 		if (read_size > MAX_MESSAGE_LENGTH) {
 
 			char message[] = "Max size is 10.000 characters!\n";
 			if (write(sock, message, strlen(message)) < 0)

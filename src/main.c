@@ -30,10 +30,12 @@ int main(int argc, char *argv[]) {
 
 	char *webcontentPath = "/usr/share/catbind/webcontent";
 	char *domain = "catbin.xyz";
+	char *databaseDirectory = "/var/lib/catbind";
 
 	struct option long_options[] = {
 		{"webcontent", required_argument, 0, 'w'},
-		{"domain", required_argument, 0, 'd'}
+		{"domain", required_argument, 0, 'h'},
+		{"data", required_argument, 0, 'd'}
 	};
 
 
@@ -49,8 +51,11 @@ int main(int argc, char *argv[]) {
 			case 'w':
 				webcontentPath = optarg;
 				break;
-			case 'd':
+			case 'h':
 				domain = optarg;
+				break;
+			case 'd':
+				databaseDirectory = optarg;
 				break;
 			case ':':
 				fprintf(stderr, "Missing argument value\n");
@@ -61,8 +66,19 @@ int main(int argc, char *argv[]) {
 	// If string starts with a space remove it
 	if (*webcontentPath == ' ')
 		webcontentPath++;
+	
 	if (*domain == ' ')
 		domain++;
+	
+	if (*databaseDirectory == ' ')
+		databaseDirectory++;
+
+ 	if (openDB(databaseDirectory) < 0)
+		return 1;
+
+	printf("Opened db at %s\n", databaseDirectory);
+
+	dbStrarted = 1;
 
 	if (webserverStart(webPort, webcontentPath) < 0) {
 		perror("Error starting webserver: ");
@@ -77,13 +93,6 @@ int main(int argc, char *argv[]) {
 	);
 
 	webserverStarted = 1;
-
-
- 	if (openDB() < 0)
-		return 1;
-
-	dbStrarted = 1;
-
 
 	int socket_fdesc = socket(AF_INET , SOCK_STREAM , 0);
 	

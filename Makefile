@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-pthread -Wall -Wextra -O2 -std=c99 -pedantic -Isrc/headers 
+CFLAGS=-pthread -Wall -Wextra -O2 -std=c99 -pedantic -Isrc/include 
 
 
 build:
