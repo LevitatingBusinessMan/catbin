@@ -48,8 +48,8 @@ int answer_to_connection(
 	const char *version,
 	const char *upload_data,
 	size_t *upload_data_size,
-	void **con_cls)
-{
+	void **con_cls
+) {
 
 	// Suppress "unused parameter" warning
 	(void) cls;
@@ -85,9 +85,10 @@ int answer_to_connection(
 
 		if (value == NULL)
 		{
-			content = "Not found";
+			content = "Not found\0";
 			mode = MHD_RESPMEM_PERSISTENT;
-			status = 500;
+			status = 404;
+			free(value);
 		}
 
 		else

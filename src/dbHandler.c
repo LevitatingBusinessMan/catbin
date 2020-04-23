@@ -66,6 +66,8 @@ char *readDB(char *key) {
 		return NULL;
 	}
 
+	*(read + readlen) = '\0';
+
 	return read;
 
 }
