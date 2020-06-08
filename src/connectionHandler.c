@@ -23,6 +23,15 @@ void *connectionHandler(void *argsptr) {
 	// bytes that we have put in the buffer
 	int accumulated = 0;
 
+	/* This has to be rewritten,
+	assuming all packets except the last are in 1024 of size doesn't work.
+	When something in the pipeline hangs the size accumulates.
+	
+	Update: In theory we could expect any packet smaller than 1024 to be the last.
+	This should be relatively safe.
+	*/
+
+
 	int read_size;
 	while((read_size = read(sock , readBuffer , 1024)) > 0) {
 		
@@ -45,7 +54,7 @@ void *connectionHandler(void *argsptr) {
 		strcat(totalBuffer, readBuffer);
 
 		// Assume this was the last packet, stop reading
-		if (read_size != 1024) {
+		if (read_size < 1024) {
 			break;
 		}
 
