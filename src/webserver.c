@@ -65,6 +65,8 @@ int answer_to_connection(
 	// Response mode, set to MUST_FREE when pointer points to heap
 	enum MHD_ResponseMemoryMode mode = MHD_RESPMEM_MUST_FREE;
 
+	printf("Web-Request: %s\n", url);
+
 	// send index.html
 	if (strcmp(url, "/") == 0)
 	{
