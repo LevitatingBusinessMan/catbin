@@ -66,7 +66,10 @@ char *readDB(char *key) {
 		return NULL;
 	}
 
-	*(read + readlen) = '\0';
+	// read is NULL when nothing is found,
+	// in that case null-terminating would be a pretty bad thing
+	if (read != NULL)
+		*(read + readlen) = '\0';
 
 	return read;
 
