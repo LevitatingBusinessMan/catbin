@@ -71,8 +71,6 @@ char *readDB(char *key) {
 	if (read != NULL)
 		*(read + readlen) = '\0';
 
-	printf(read);
-
 	return read;
 
 }
