@@ -30,7 +30,7 @@ int openDB(char *directory) {
 
 }
 
-int writeDB(char *key, char *value) {
+int writeDB(char *key, char *value, size_t size) {
  	
 	char *errptr = NULL;
 
@@ -41,7 +41,7 @@ int writeDB(char *key, char *value) {
 		return -1;
 	}
 
-	leveldb_put(db, woptions, key, strlen(key), value, strlen(value), &errptr);
+	leveldb_put(db, woptions, key, strlen(key), value, size, &errptr);
 
 	if (errptr != NULL) {
 		fprintf(stderr, "Failure writing to db: %s\n", errptr);
@@ -70,6 +70,8 @@ char *readDB(char *key) {
 	// in that case null-terminating would be a pretty bad thing
 	if (read != NULL)
 		*(read + readlen) = '\0';
+
+	printf(read);
 
 	return read;
 

@@ -29,5 +29,5 @@ echo HELLO WORLD | nc catbin.xyz 5454
 ```
 Alternatively you can setup an alias like this:
 ```SH
-alias catbin="nc localhost 5454 <"
+alias catbin="nc catbin.xyz 5454 <"
 ```

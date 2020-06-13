@@ -39,8 +39,8 @@ void *connectionHandler(void *argsptr) {
 
 		accumulated += read_size;
 
-		// Limit reached
-		if (accumulated > MAX_MESSAGE_LENGTH) {
+		// Limit reached (-1 because of the null byte)
+		if (accumulated > MAX_MESSAGE_LENGTH - 1) {
 			char message[] = "Max size is 130.000 characters!\n";
 			if (write(sock, message, strlen(message)) < 0)
 				perror("Error writing to socket: ");
@@ -66,7 +66,7 @@ void *connectionHandler(void *argsptr) {
 	}
 
 	char key[5];
-	writeDB(&key, totalBuffer);
+	writeDB(&key, totalBuffer, accumulated);
 	
 	size_t length = strlen(domain) + 15;
 	char url[length];
