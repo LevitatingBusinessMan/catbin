@@ -12,14 +12,14 @@ catbind
 
 #### Arguments
 ```
-Usage: catbin [OPTION]...
+Usage: catbind [OPTION]...
 Launch a catbin server
 
 	-p					Port to listen for nc sockets
 	-s					Port to run webserver on
-	-w, --webcontent	Directory were files are served from
-	-h, --domain		The domain where the service is accessed from
-	-d, --data			Directory to store data in
+	-w, --webcontent			Directory were files are served from
+	-h, --domain				The domain where the service is accessed from
+	-d, --data				Directory to store data in
 
 ```
 
