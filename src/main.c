@@ -27,6 +27,7 @@ int main(int argc, char *argv[]) {
 
 	int port = 5454;
 	int webPort = 80;
+	int timeout = 3;
 
 	char *webcontentPath = "/usr/share/catbind/webcontent";
 	char *domain = "catbin.xyz";
@@ -35,12 +36,13 @@ int main(int argc, char *argv[]) {
 	struct option long_options[] = {
 		{"webcontent", required_argument, 0, 'w'},
 		{"domain", required_argument, 0, 'h'},
-		{"data", required_argument, 0, 'd'}
+		{"data", required_argument, 0, 'd'},
+		{"timeout", required_argument, 0, 't'}
 	};
 
 
 	int option;
-	while ((option = getopt_long(argc, argv, ":p:s:w:h:d:", long_options, NULL)) != -1 )  {  
+	while ((option = getopt_long(argc, argv, ":p:s:w:h:d:t:", long_options, NULL)) != -1 )  {  
         switch(option) {  
 			case 'p':
 				port = atoi(optarg);
@@ -56,6 +58,9 @@ int main(int argc, char *argv[]) {
 				break;
 			case 'd':
 				databaseDirectory = optarg;
+				break;
+			case 't':
+				timeout = atoi(optarg);
 				break;
 			case ':':
 				fprintf(stderr, "Missing argument value\n");
@@ -143,6 +148,7 @@ int main(int argc, char *argv[]) {
 
 		args.sock = conn_socket;
 		args.domain = domain;
+		args.timeout = timeout;
 
 		if(pthread_create( &thread_id , NULL ,  connectionHandler , &args) < 0) {
 			perror("Error");
