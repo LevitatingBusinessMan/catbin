@@ -8,8 +8,6 @@
 #include <stdlib.h>
 #include <sys/time.h>
 
-#define MAX_MESSAGE_LENGTH 130000
-
 void connectionHandler(void *argsptr) {
 
 	struct ArgumentStruct *args = argsptr;
@@ -17,9 +15,10 @@ void connectionHandler(void *argsptr) {
 	int sock = args->sock;
 	char *domain = args->domain;
 	int timeout = args->timeout;
+	int max_length = args->max_length;
 
 	// We concatentate this so set it to 0's
-	char *totalBuffer = calloc(1, MAX_MESSAGE_LENGTH);
+	char *totalBuffer = calloc(1, max_length);
 	char readBuffer[1024];
 
 	// bytes that we have put in the buffer
@@ -52,8 +51,11 @@ void connectionHandler(void *argsptr) {
 		accumulated += read_size;
 
 		// Limit reached (-1 because of the null byte)
-		if (accumulated > MAX_MESSAGE_LENGTH - 1) {
-			char message[] = "Max size is 130.000 characters!\n";
+		if (accumulated > max_length - 1) {
+			
+			char message[50];
+			snprintf(message, 50, "Max size is %d characters!\n", max_length);
+			
 			if (write(sock, message, strlen(message)) < 0)
 				perror("Error writing to socket: ");
 			if (shutdown(sock, SHUT_RDWR) < 0)

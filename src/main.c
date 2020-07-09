@@ -28,21 +28,25 @@ int main(int argc, char *argv[]) {
 	int port = 5454;
 	int webPort = 80;
 	int timeout = 3;
+	int max_length = 130000;
 
 	char *webcontentPath = "/usr/share/catbind/webcontent";
 	char *domain = "catbin.xyz";
 	char *databaseDirectory = "/var/lib/catbind";
 
 	struct option long_options[] = {
+		{"port", required_argument, 0, 'p'},
+		{"wport", required_argument, 0, 's'},
 		{"webcontent", required_argument, 0, 'w'},
 		{"domain", required_argument, 0, 'h'},
 		{"data", required_argument, 0, 'd'},
-		{"timeout", required_argument, 0, 't'}
+		{"timeout", required_argument, 0, 't'},
+		{"maxlength", required_argument, 0, 'm'}
 	};
 
 
 	int option;
-	while ((option = getopt_long(argc, argv, ":p:s:w:h:d:t:", long_options, NULL)) != -1 )  {  
+	while ((option = getopt_long(argc, argv, ":p:s:w:h:d:t:m:", long_options, NULL)) != -1 )  {  
         switch(option) {  
 			case 'p':
 				port = atoi(optarg);
@@ -61,6 +65,9 @@ int main(int argc, char *argv[]) {
 				break;
 			case 't':
 				timeout = atoi(optarg);
+				break;
+			case 'm':
+				max_length = atoi(optarg);
 				break;
 			case ':':
 				fprintf(stderr, "Missing argument value\n");
@@ -149,6 +156,7 @@ int main(int argc, char *argv[]) {
 		args.sock = conn_socket;
 		args.domain = domain;
 		args.timeout = timeout;
+		args.max_length = max_length;
 
 		if(pthread_create( &thread_id , NULL ,  connectionHandler , &args) < 0) {
 			perror("Error");
