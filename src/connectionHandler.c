@@ -7,6 +7,7 @@
 #include <sys/ioctl.h>
 #include <stdlib.h>
 #include <sys/time.h>
+#include <arpa/inet.h>
 
 void connectionHandler(void *argsptr) {
 
@@ -16,6 +17,17 @@ void connectionHandler(void *argsptr) {
 	char *domain = args->domain;
 	int timeout = args->timeout;
 	int max_length = args->max_length;
+
+	struct sockaddr_in addr;
+	socklen_t addr_size;
+	if (getpeername(sock, (struct sockaddr *)&addr, &addr_size) > 0) {
+		perror("Error:");
+		return;
+	}
+
+	char clientip[INET_ADDRSTRLEN];
+	strcpy(clientip, inet_ntoa(addr.sin_addr));
+	//inet_ntop(AF_INET, addr.sin_addr, clientip, sizeof clientip);
 
 	// We concatentate this so set it to 0's
 	char *totalBuffer = calloc(1, max_length);
@@ -46,7 +58,7 @@ void connectionHandler(void *argsptr) {
 
 	while(((read_size = read(sock, readBuffer, 1024)) > 0)) {
 
-		printf("Received %d bytes\n", read_size);
+		printf("[%s]\tTCP:\t\tReceived %d bytes\n", clientip, read_size);
 
 		accumulated += read_size;
 

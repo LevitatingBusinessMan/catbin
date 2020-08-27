@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
 
 struct MHD_Daemon *daemon;
 
@@ -40,7 +42,7 @@ int getIndex(char **content)
 
 }
 
-int answer_to_connection(
+enum MHD_Result answer_to_connection(
 	void *cls,
 	struct MHD_Connection *connection,
 	const char *url,
@@ -65,7 +67,11 @@ int answer_to_connection(
 	// Response mode, set to MUST_FREE when pointer points to heap
 	enum MHD_ResponseMemoryMode mode = MHD_RESPMEM_MUST_FREE;
 
-	printf("Web-Request: %s\n", url);
+	struct sockaddr** addr = (struct sockaddr **) MHD_get_connection_info(connection, MHD_CONNECTION_INFO_CLIENT_ADDRESS);
+	char clientip[INET_ADDRSTRLEN];
+	strcpy(clientip, inet_ntoa( ((struct sockaddr_in *) *addr)->sin_addr));
+
+	printf("[%s]\tRequest:\t%s\n", clientip, url);
 
 	// send index.html
 	if (strcmp(url, "/") == 0)

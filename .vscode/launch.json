@@ -9,7 +9,7 @@
 			"type": "cppdbg",
 			"request": "launch",
 			"program": "${workspaceFolder}/bin/catbind",
-			"args": ["-s 8080", "-w src/webcontent", "-h localhost:8080", "-d data"],
+			"args": ["-s 8080", "-w src/webcontent", "-h localhost:8080", "-d data", "-t 1"],
 			"stopAtEntry": false,
 			"cwd": "${workspaceFolder}",
 			"environment": [],
