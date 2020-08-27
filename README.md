@@ -15,13 +15,14 @@ catbind
 Usage: catbind [OPTION]...
 Launch a catbin server
 
+        --help              Show this help page
     -p, --port          Port to listen for nc sockets
     -s, --wport         Port to run webserver on
     -w, --webcontent    Directory were files are served from
     -h, --domain        The domain where the service is accessed from
     -d, --data          Directory to store data in
     -t, --timeout       Time to wait before closing socket in seconds
-    -m, ---maxlength    Max length for a paste in vytes
+    -m, ---maxlength    Max length for a paste in bytes
 
 ```
 

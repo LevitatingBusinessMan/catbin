@@ -25,6 +25,8 @@ int main(int argc, char *argv[]) {
 
 	atexit(beforeExit);
 
+	int helpPage = 0;
+
 	int port = 5454;
 	int webPort = 80;
 	int timeout = 3;
@@ -35,6 +37,7 @@ int main(int argc, char *argv[]) {
 	char *databaseDirectory = "/var/lib/catbind";
 
 	struct option long_options[] = {
+		{"help", no_argument, &helpPage, 1},
 		{"port", required_argument, 0, 'p'},
 		{"wport", required_argument, 0, 's'},
 		{"webcontent", required_argument, 0, 'w'},
@@ -43,7 +46,6 @@ int main(int argc, char *argv[]) {
 		{"timeout", required_argument, 0, 't'},
 		{"maxlength", required_argument, 0, 'm'}
 	};
-
 
 	int option;
 	while ((option = getopt_long(argc, argv, ":p:s:w:h:d:t:m:", long_options, NULL)) != -1 )  {  
@@ -73,6 +75,23 @@ int main(int argc, char *argv[]) {
 				fprintf(stderr, "Missing argument value\n");
 				return 1;
         }
+	}
+
+	if (helpPage == 1) {
+		printf(
+		"Usage: catbind [OPTION]...\n"
+		"Launch a catbin server\n"
+		"\n"
+		"\t    --help          Show this help page\n"
+		"\t-p, --port          Port to listen for nc sockets\n"
+		"\t-s, --wport         Port to run webserver on\n"
+		"\t-w, --webcontent    Directory were files are served from\n"
+		"\t-h, --domain        The domain where the service is accessed from\n"
+		"\t-d, --data          Directory to store data in\n"
+		"\t-t, --timeout       Time to wait before closing socket in seconds\n"
+		"\t-m, ---maxlength    Max length for a paste in bytes\n");
+	
+		exit(0);
 	}
 
 	// If string starts with a space remove it
