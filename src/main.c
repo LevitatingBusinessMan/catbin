@@ -30,7 +30,7 @@ int main(int argc, char *argv[]) {
 	int port = 5454;
 	int webPort = 80;
 	int timeout = 3;
-	int max_length = 130000;
+	int max_length = 1048576;
 
 	char *webcontentPath = "/usr/share/catbind/webcontent";
 	char *domain = "catbin.xyz";

@@ -1,0 +1,7 @@
+[Unit]
+Description=Run catbind server
+[Service]
+EnvironmentFile=/etc/catbind.conf
+ExecStart=/usr/bin/catbind --port $PORT --wport $WEBPORT --webcontent $WEBCONTENT --domain $DOMAIN --data $DATADIR --timeout $TIMEOUT --maxlength $MAXLENGTH
+[Install]
+WantedBy=network.target

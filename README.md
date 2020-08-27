@@ -10,6 +10,12 @@ sudo make install
 catbind
 ```
 
+You can also use the systemd service:
+```
+sudo systemctl start catbind
+```
+Configuration for the systemd service is located at `/etc/catbind.conf`
+
 #### Arguments
 ```
 Usage: catbind [OPTION]...
