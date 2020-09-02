@@ -58,7 +58,7 @@ void connectionHandler(void *argsptr) {
 
 	while(((read_size = read(sock, readBuffer, 1024)) > 0)) {
 
-		printf("[%s]\tTCP:\t\tReceived %d bytes\n", clientip, read_size);
+		printf("[%-15s] TCP: Received %d bytes\n", clientip, read_size);
 
 		accumulated += read_size;
 

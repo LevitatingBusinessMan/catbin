@@ -71,7 +71,7 @@ enum MHD_Result answer_to_connection(
 	char clientip[INET_ADDRSTRLEN];
 	strcpy(clientip, inet_ntoa( ((struct sockaddr_in *) *addr)->sin_addr));
 
-	printf("[%s]\tRequest:\t%s\n", clientip, url);
+	printf("[%-15s] Request: %s\n", clientip, url);
 
 	// send index.html
 	if (strcmp(url, "/") == 0)
