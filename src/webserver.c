@@ -108,6 +108,8 @@ enum MHD_Result answer_to_connection(
 	struct MHD_Response *response;
 	response = MHD_create_response_from_buffer(strlen(content), content, mode);
 
+	MHD_add_response_header(response, "Content-Type", "text/plain; charset=utf-8");
+
 	int ret = MHD_queue_response(connection, status, response);
 
 	if (ret == MHD_NO)
