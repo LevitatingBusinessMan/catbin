@@ -31,6 +31,7 @@ int main(int argc, char *argv[]) {
 	int webPort = 80;
 	int timeout = 3;
 	int max_length = 1048576;
+	int secure = 0;
 
 	char *webcontentPath = "/usr/share/catbind/webcontent";
 	char *domain = "catbin.xyz";
@@ -44,7 +45,8 @@ int main(int argc, char *argv[]) {
 		{"domain", required_argument, 0, 'h'},
 		{"data", required_argument, 0, 'd'},
 		{"timeout", required_argument, 0, 't'},
-		{"maxlength", required_argument, 0, 'm'}
+		{"maxlength", required_argument, 0, 'm'},
+		{"secure", no_argument, 0, 'e'}
 	};
 
 	int option;
@@ -71,6 +73,9 @@ int main(int argc, char *argv[]) {
 			case 'm':
 				max_length = atoi(optarg);
 				break;
+			case 'e':
+				secure = 1;
+				break;
 			case ':':
 				fprintf(stderr, "Missing argument value\n");
 				return 1;
@@ -89,7 +94,8 @@ int main(int argc, char *argv[]) {
 		"\t-h, --domain        The domain where the service is accessed from\n"
 		"\t-d, --data          Directory to store data in\n"
 		"\t-t, --timeout       Time to wait before closing socket in seconds\n"
-		"\t-m, ---maxlength    Max length for a paste in bytes\n");
+		"\t-m, ---maxlength    Max length for a paste in bytes\n"
+		"\t-e, ---secure       Defines if the url returned uses https\n");
 	
 		exit(0);
 	}
@@ -176,6 +182,7 @@ int main(int argc, char *argv[]) {
 		args.domain = domain;
 		args.timeout = timeout;
 		args.max_length = max_length;
+		args.secure = secure;
 
 		if(pthread_create( &thread_id , NULL ,  connectionHandler , &args) < 0) {
 			perror("Error");

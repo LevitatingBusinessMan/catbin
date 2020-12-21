@@ -17,6 +17,7 @@ void connectionHandler(void *argsptr) {
 	char *domain = args->domain;
 	int timeout = args->timeout;
 	int max_length = args->max_length;
+	int secure = args->secure;
 
 	struct sockaddr_in addr;
 	socklen_t addr_size;
@@ -94,9 +95,10 @@ void connectionHandler(void *argsptr) {
 		char key[5];
 		writeDB(&key, totalBuffer, accumulated);
 		
-		size_t length = strlen(domain) + 15;
+		size_t length = strlen(domain) + 15 + secure;
 		char url[length];
-		snprintf(url, length, "http://%s/%s\n", domain, key);
+		if (secure) snprintf(url, length, "https://%s/%s\n", domain, key);
+		else snprintf(url, length, "http://%s/%s\n", domain, key);
 
 		if (write(sock, url, length) < 0)
 			perror("Error writing to socket: ");

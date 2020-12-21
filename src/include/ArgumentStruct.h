@@ -3,4 +3,5 @@ struct ArgumentStruct {
 	char *domain;
 	int timeout;
 	int max_length;
+	int secure;
 };
