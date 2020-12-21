@@ -73,9 +73,12 @@ enum MHD_Result answer_to_connection(
 
 	printf("[%-15s] Request: %s\n", clientip, url);
 
+	char *content_type;
+
 	// send index.html
 	if (strcmp(url, "/") == 0)
 	{
+		content_type = "text/html;";
 		if (getIndex(&content) < 0)
 		{
 			perror("Error opening file: ");
@@ -90,6 +93,8 @@ enum MHD_Result answer_to_connection(
 	{
 		const char *key = url + 1;
 		char *value = readDB(key);
+
+		content_type = "text/plain; charset=utf-8";
 
 		if (value == NULL)
 		{
@@ -108,7 +113,7 @@ enum MHD_Result answer_to_connection(
 	struct MHD_Response *response;
 	response = MHD_create_response_from_buffer(strlen(content), content, mode);
 
-	MHD_add_response_header(response, "Content-Type", "text/plain; charset=utf-8");
+	MHD_add_response_header(response, "Content-Type", content_type);
 
 	int ret = MHD_queue_response(connection, status, response);
 
