@@ -46,11 +46,11 @@ int main(int argc, char *argv[]) {
 		{"data", required_argument, 0, 'd'},
 		{"timeout", required_argument, 0, 't'},
 		{"maxlength", required_argument, 0, 'm'},
-		{"secure", no_argument, 0, 'e'}
+		{"secure", optional_argument, 0, 'e'}
 	};
 
 	int option;
-	while ((option = getopt_long(argc, argv, ":p:s:w:h:d:t:m:", long_options, NULL)) != -1 )  {  
+	while ((option = getopt_long(argc, argv, ":p:s:w:h:d:t:m:e::", long_options, NULL)) != -1 )  {  
         switch(option) {  
 			case 'p':
 				port = atoi(optarg);
@@ -75,6 +75,9 @@ int main(int argc, char *argv[]) {
 				break;
 			case 'e':
 				secure = 1;
+				if (optarg != NULL) {
+					secure = atoi(optarg);
+				}
 				break;
 			case ':':
 				fprintf(stderr, "Missing argument value\n");

@@ -29,6 +29,7 @@ Launch a catbin server
     -d, --data          Directory to store data in
     -t, --timeout       Time to wait before closing socket in seconds
     -m, ---maxlength    Max length for a paste in bytes
+    -e, ---secure       Defines if the url returned uses https
 
 ```
 
