@@ -1,19 +1,20 @@
 CC=gcc
-CFLAGS=-pthread -Wall -Wextra -O2 -std=c99 -pedantic -Isrc/include 
+CFLAGS=-pthread -Wall -Wextra -O2 -std=c99 -pedantic -Isrc/include -lleveldb -lmicrohttpd
 
 
 build:
 	mkdir -p bin
-	$(CC) $(CFLAGS) -o bin/catbind src/*.c -lleveldb -lmicrohttpd
+	$(CC) $(CFLAGS) -o bin/catbind src/*.c
 
 # With errors instead of warnings
 release:
 	mkdir -p bin
-	$(CC) $(CFLAGS) -Werror -o bin/catbind src/*.c -lleveldb -lmicrohttpd
+	$(CC) $(CFLAGS) -Werror -o bin/catbind src/*.c
+
 # Adds symbols
 debug:
 	mkdir -p bin
-	$(CC) $(CFLAGS) -g -o bin/catbind src/*.c -lleveldb -lmicrohttpd
+	$(CC) $(CFLAGS) -g -o bin/catbind src/*.c
 
 install:
 	install -Dvm 755 bin/catbind /usr/lib/catbind
