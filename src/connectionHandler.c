@@ -34,23 +34,11 @@ void connectionHandler(void *argsptr) {
 	char *totalBuffer = malloc(max_length+1);
 	char readBuffer[1024];
 
-	//Make first byte a null-byte to assure strcat will work
+	// Make first byte a null-byte to assure strcat will work
 	totalBuffer[0] = '\0';
 
-	// bytes that we have put in the buffer
+	// Bytes that we have put in the buffer
 	int accumulated = 0;
-
-	/*
-	Netcat sends data in packets of 1024, sometimes higher when multiple are received as one.
-	This is why we assume packets smaller than 1024 to be the last send packet.
-	When the last packet received was in fact 1024 or more bytes the connection will be closed via a timeout.
-	
-	Update:
-	As of 9/7/20 catbin now always relies on a timeout.
-	In production sometimes netcat sends a smaller packet than 1024 bytes,
-	thus assuming any packets smaller than 1024 bytes doesn't work.
-	
-	*/
 
  	int read_size;
 
