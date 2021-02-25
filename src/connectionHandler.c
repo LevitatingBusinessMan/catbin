@@ -30,9 +30,12 @@ void connectionHandler(void *argsptr) {
 	strcpy(clientip, inet_ntoa(addr.sin_addr));
 	//inet_ntop(AF_INET, addr.sin_addr, clientip, sizeof clientip);
 
-	// We concatentate this so set it to 0's
-	char *totalBuffer = calloc(1, max_length);
+
+	char *totalBuffer = malloc(max_length+1);
 	char readBuffer[1024];
+
+	//Make first byte a null-byte to assure strcat will work
+	totalBuffer[0] = '\0';
 
 	// bytes that we have put in the buffer
 	int accumulated = 0;
@@ -78,17 +81,7 @@ void connectionHandler(void *argsptr) {
 		}
 		
 		// Add new data to total
-		strcat(totalBuffer, readBuffer);
-
-		// Assume this was the last packet, stop reading
-		/* This was unreliable in production
-		if (read_size < 1024) {
-			break;
-		} */
-
-		// Nullify buffer
-		memset(readBuffer, '\0', 1024);
-
+		strncat(totalBuffer, readBuffer, read_size);
 	}
 
 	if (accumulated > 0) {
