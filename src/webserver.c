@@ -29,12 +29,15 @@ int getIndex(char **content)
 	unsigned int size = ftell(fs);
 	rewind(fs);
 
-	// Read to buffer
+	// Create buffer
 	if ((*content = malloc(size + 1)) == NULL)
 		return -1;
 
+	// Read to buffer
 	if (fread(*content, 1, size, fs) < size)
 		perror("Error reading file: ");
+
+	content[size] = '\0';
 
 	fclose(fs);
 
