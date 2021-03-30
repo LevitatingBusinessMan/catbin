@@ -37,7 +37,7 @@ int getIndex(char **content)
 	if (fread(*content, 1, size, fs) < size)
 		perror("Error reading file: ");
 
-	content[size] = '\0';
+	(*content)[size] = '\0';
 
 	fclose(fs);
 

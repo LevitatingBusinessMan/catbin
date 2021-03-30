@@ -21,7 +21,7 @@ install:
 	cd /usr/bin; ln -vfs ../lib/catbind catbind; cd -
 	install -Dvm 644 src/webcontent/* -t /usr/share/catbind/webcontent
 	install -Dbvm 644 catbind.conf /etc/catbind.conf
-	install -Dvm 644 catbind.service /usr/lib/systemd/system/catbind.service
+	install -DCvm 644 catbind.service /usr/lib/systemd/system/catbind.service
 
 uninstall:
 	rm -rv /usr/lib/catbind /usr/bin/catbind /usr/share/catbind

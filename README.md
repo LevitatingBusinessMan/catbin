@@ -21,7 +21,7 @@ Configuration for the systemd service is located at `/etc/catbind.conf`
 Usage: catbind [OPTION]...
 Launch a catbin server
 
-        --help              Show this help page
+        --help          Show this help page
     -p, --port          Port to listen for nc sockets
     -s, --wport         Port to run webserver on
     -w, --webcontent    Directory were files are served from
