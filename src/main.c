@@ -9,6 +9,8 @@
 #include <dbHandler.h>
 #include <webserver.h>
 #include <ArgumentStruct.h>
+#include <read_file.h>
+#include <string.h>
 
 int dbStrarted = 0;
 int webserverStarted = 0;
@@ -36,6 +38,7 @@ int main(int argc, char *argv[]) {
 	char *webcontentPath = "/usr/share/catbind/webcontent";
 	char *domain = "catbin.xyz";
 	char *databaseDirectory = "/var/lib/catbind";
+	char *whitelist_file = NULL;
 
 	struct option long_options[] = {
 		{"help", no_argument, &helpPage, 1},
@@ -46,11 +49,12 @@ int main(int argc, char *argv[]) {
 		{"data", required_argument, 0, 'd'},
 		{"timeout", required_argument, 0, 't'},
 		{"maxlength", required_argument, 0, 'm'},
-		{"secure", optional_argument, 0, 'e'}
+		{"secure", optional_argument, 0, 'e'},
+		{"whitelist", required_argument, 0, 'l'}
 	};
 
 	int option;
-	while ((option = getopt_long(argc, argv, ":p:s:w:h:d:t:m:e::", long_options, NULL)) != -1 )  {  
+	while ((option = getopt_long(argc, argv, ":p:s:w:h:d:t:m:e::l:", long_options, NULL)) != -1 )  {  
         switch(option) {  
 			case 'p':
 				port = atoi(optarg);
@@ -79,6 +83,9 @@ int main(int argc, char *argv[]) {
 					secure = atoi(optarg);
 				}
 				break;
+			case 'l':
+				if (strcmp(optarg, "none") != 0) whitelist_file = optarg;
+				break;
 			case ':':
 				fprintf(stderr, "Missing argument value\n");
 				return 1;
@@ -97,8 +104,9 @@ int main(int argc, char *argv[]) {
 		"\t-h, --domain        The domain where the service is accessed from\n"
 		"\t-d, --data          Directory to store data in\n"
 		"\t-t, --timeout       Time to wait before closing socket in seconds\n"
-		"\t-m, ---maxlength    Max length for a paste in bytes\n"
-		"\t-e, ---secure       Defines if the url returned uses https\n");
+		"\t-m, --maxlength     Max length for a paste in bytes\n"
+		"\t-e, --secure        Defines if the url returned uses https\n"
+		"\t-l, --whitelist     A file containing whitelisted IP addresses\n");
 	
 		exit(0);
 	}
@@ -117,6 +125,16 @@ int main(int argc, char *argv[]) {
 		return 1;
 
 	printf("Opened db at %s\n", databaseDirectory);
+
+	char *whitelist = NULL;
+
+	if (whitelist_file) {
+		if (read_file(whitelist_file, &whitelist) < 0) {
+			perror("Error reading whitelist");
+			return 1;
+		}
+		printf("Read whitelist from %s\n", whitelist_file);
+	}
 
 	dbStrarted = 1;
 
@@ -186,6 +204,7 @@ int main(int argc, char *argv[]) {
 		args.timeout = timeout;
 		args.max_length = max_length;
 		args.secure = secure;
+		args.whitelist = whitelist;
 
 		if(pthread_create( &thread_id , NULL ,  connectionHandler , &args) < 0) {
 			perror("Error");

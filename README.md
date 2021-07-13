@@ -14,7 +14,7 @@ You can also use the systemd service:
 ```
 sudo systemctl start catbind
 ```
-Configuration for the systemd service is located at `/etc/catbind.conf`
+Configuration for the systemd service is read from `/etc/catbind.conf`
 
 #### Arguments
 ```
@@ -30,6 +30,7 @@ Launch a catbin server
     -t, --timeout       Time to wait before closing socket in seconds
     -m, ---maxlength    Max length for a paste in bytes
     -e, ---secure       Defines if the url returned uses https
+    -l, --whitelist     A file containing whitelisted IP addresses
 
 ```
 

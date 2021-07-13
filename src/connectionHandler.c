@@ -18,6 +18,7 @@ void connectionHandler(void *argsptr) {
 	int timeout = args->timeout;
 	int max_length = args->max_length;
 	int secure = args->secure;
+	char *whitelist = args->whitelist;
 
 	struct sockaddr_in addr;
 	socklen_t addr_size;
@@ -30,6 +31,41 @@ void connectionHandler(void *argsptr) {
 	strcpy(clientip, inet_ntoa(addr.sin_addr));
 	//inet_ntop(AF_INET, addr.sin_addr, clientip, sizeof clientip);
 
+	if (whitelist) {
+		//The whitelist string is a list of addresses seperated by newlines
+		size_t i = 0; //Index whitelist file
+		size_t j = 0; //Index client ip
+
+		size_t ip_len = strlen(clientip);
+
+		while (1) {
+			if (whitelist[i] == clientip[j]) {
+				i++;
+				j++;
+
+				if (j == ip_len) break;
+				continue;
+			}
+
+			//Fast forward to next ip
+			j = 0;
+			while (whitelist[i] != '\0' && whitelist[i] != '\n') i++;
+			if (whitelist[i] == '\n') i++; //Step over newline
+			
+			//Reached end of whitelist
+			else {
+				printf("Dropping connection to %s (not whitelisted)\n", clientip);
+
+				char *message = "You are not authorized!\n";
+				if (write(sock, message, strlen(message)) < 0)
+					perror("Error writing to socket: ");
+				if (shutdown(sock, SHUT_RDWR) < 0)
+					perror("Error closing socket: ");
+
+				return;
+			}
+		}
+	}
 
 	char *totalBuffer = malloc(max_length+1);
 	char readBuffer[1024];

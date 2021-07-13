@@ -4,4 +4,5 @@ struct ArgumentStruct {
 	int timeout;
 	int max_length;
 	int secure;
+	char *whitelist;
 };
