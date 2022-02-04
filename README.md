@@ -28,8 +28,8 @@ Launch a catbin server
     -h, --domain        The domain where the service is accessed from
     -d, --data          Directory to store data in
     -t, --timeout       Time to wait before closing socket in seconds
-    -m, ---maxlength    Max length for a paste in bytes
-    -e, ---secure       Defines if the url returned uses https
+    -m, --maxlength     Max length for a paste in bytes
+    -e, --secure        Defines if the url returned uses https
     -l, --whitelist     A file containing whitelisted IP addresses
 
 ```
