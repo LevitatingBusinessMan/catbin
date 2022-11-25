@@ -22,11 +22,16 @@ debug:
 install:
 	install -Dvm 755 bin/catbind $(DESTDIR)$(PREFIX)/bin/catbind
 	install -Dvm 644 src/webcontent/* -t $(DESTDIR)$(PREFIX)/share/catbind/webcontent
+
+	# I have yet to figure out how to do /etc correctly
 	install -Dbvm 644 catbind.conf $(DESTDIR)$(PREFIX)/etc/catbind.conf
 	install -DCvm 644 catbind.service $(DESTDIR)$(PREFIX)/lib/systemd/system/catbind.service
 
 uninstall:
-	rm -rv $(DESTDIR)$(PREFIX)/bin/catbind $(DESTDIR)$(PREFIX)/share/catbind
+	rm -v $(DESTDIR)$(PREFIX)/bin/catbind
+	rm -rv $(DESTDIR)$(PREFIX)/share/catbind
+	rm -v $(DESTDIR)$(PREFIX)/etc/catbind.conf
+	rm -v $(DESTDIR)$(PREFIX)/lib/systemd/system/catbind.service
 
 make check:
 	./test.sh
