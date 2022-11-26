@@ -4,6 +4,7 @@ A termbin clone.
 ## To build/install/run the server:
 ```SH
 git clone https://github.com/LevitatingBusinessMan/catbin
+cd catbin
 sudo apt-get install libmicrohttpd-dev libleveldb-dev -y
 make
 sudo make install
@@ -41,4 +42,13 @@ echo HELLO WORLD | nc catbin.xyz 5454
 Alternatively you can setup an alias like this:
 ```SH
 alias catbin="nc catbin.xyz 5454 <"
+```
+
+## Using Docker
+```
+git clone https://github.com/LevitatingBusinessMan/catbin
+cd catbin
+docker build . -t catbin
+docker create volume catbin
+docker run -p 5454:5454 -p 80:80 -v catbin:/var/lib/catbind -dt catbin 
 ```
