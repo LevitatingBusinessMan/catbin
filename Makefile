@@ -22,6 +22,7 @@ debug:
 install:
 	install -Dvm 755 bin/catbind $(DESTDIR)$(PREFIX)/bin/catbind
 	install -Dvm 644 src/webcontent/* -t $(DESTDIR)$(PREFIX)/share/catbind/webcontent
+	install -Dvm 644 README.md LICENSE $(DESTDIR)$(PREFIX)/share/catbind/
 
 	# I have yet to figure out how to do /etc correctly
 	install -Dbvm 644 catbind.conf $(DESTDIR)$(PREFIX)/etc/catbind.conf
