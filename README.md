@@ -1,5 +1,5 @@
 # Catbin
-A termbin clone.
+A [termbin](https://github.com/solusipse/fiche) clone.
 
 ## To build/install/run the server:
 ```SH
